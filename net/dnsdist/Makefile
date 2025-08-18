@@ -16,7 +16,7 @@ PKG_CPE_ID:=cpe:/a:powerdns:dnsdist
 PKG_INSTALL:=1
 PKG_BUILD_PARALLEL:=1
 
-PKG_BUILD_DEPENDS:=boost
+PKG_BUILD_DEPENDS:=boost python3-yaml/host
 
 PKG_CONFIG_DEPENDS:= \
   CONFIG_DNSDIST_GNUTLS \
