@@ -16,13 +16,14 @@ PKG_CPE_ID:=cpe:/a:powerdns:dnsdist
 PKG_INSTALL:=1
 PKG_BUILD_PARALLEL:=1
 
-PKG_BUILD_DEPENDS:=boost # python-yaml/host
+PKG_BUILD_DEPENDS:=boost rust/host
 
 PKG_CONFIG_DEPENDS:= \
   CONFIG_DNSDIST_GNUTLS \
   CONFIG_DNSDIST_OPENSSL
 
 include $(INCLUDE_DIR)/package.mk
+include ../../lang/rust/rust-values.mk
 
 define Package/dnsdist/Default
   SECTION:=net
@@ -150,6 +151,7 @@ CONFIGURE_ARGS+= \
 	--with-lua=luajit \
 	--with-libcap \
 	--without-xsk \
+	$(if $(call IsEnabled,DNSDIST_YAML),--enable,--disable)-yaml \
 	$(if $(call IsEnabled,DNSDIST_PIE),,--disable-hardening) \
 	$(if $(call IsEnabled,DNSDIST_SODIUM),--enable-dnscrypt --with-libsodium,--disable-dnscrypt --without-libsodium) \
 	$(if $(call IsEnabled,DNSDIST_DNSTAP),--enable-dnstap=yes,--enable-dnstap=no) \
