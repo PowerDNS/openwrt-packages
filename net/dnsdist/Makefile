@@ -25,6 +25,9 @@ PKG_CONFIG_DEPENDS:= \
 include $(INCLUDE_DIR)/package.mk
 include ../../lang/rust/rust-values.mk
 
+MAKE_VARS += RUSTC_TARGET_ARCH=$(RUSTC_TARGET_ARCH)
+MAKE_VARS += RUST_TARGET=--target=$(RUSTC_TARGET_ARCH)
+
 define Package/dnsdist/Default
   SECTION:=net
   CATEGORY:=Network
@@ -126,8 +129,8 @@ IsEnabled = $(or $(filter full,$(BUILD_VARIANT)),$(CONFIG_$(1)))
 #
 # none of this is pretty
 TARGET_CXX+=-std=c++17
-TARGET_CFLAGS+=-Os -fvisibility=hidden -flto -fno-ipa-cp -DNDEBUG
-TARGET_CXXFLAGS+=-Os -fvisibility=hidden -flto -fno-ipa-cp -DNDEBUG \
+TARGET_CFLAGS+=-Os -fvisibility=hidden -fno-ipa-cp -DNDEBUG
+TARGET_CXXFLAGS+=-Os -fvisibility=hidden -fno-ipa-cp -DNDEBUG \
 	-DDISABLE_DEPRECATED_DYNBLOCK -DDISABLE_RECVMMSG -DDISABLE_NPN -DDISABLE_FALSE_SHARING_PADDING -DUSE_SINGLE_ACCEPTOR_THREAD -DOPENSSL_NO_ENGINE -DDISABLE_OPENSSL_ERROR_STRINGS \
 	$(if $(call IsEnabled,DNSDIST_CARBON),,-DDISABLE_CARBON) \
 	$(if $(call IsEnabled,DNSDIST_COMPLETION),,-DDISABLE_COMPLETION) \
@@ -156,7 +159,7 @@ CONFIGURE_ARGS+= \
 	$(if $(call IsEnabled,DNSDIST_SODIUM),--enable-dnscrypt --with-libsodium,--disable-dnscrypt --without-libsodium) \
 	$(if $(call IsEnabled,DNSDIST_DNSTAP),--enable-dnstap=yes,--enable-dnstap=no) \
 	$(if $(call IsEnabled,DNSDIST_RE2),--with,--without)-re2 \
-	$(if $(call IsEnabled,DNSDIST_NET_SNMP),--with,--without)-net-snmp \
+	$(if $(call IsEnabled,DNSDIST_NET_SNMP),--without,--without)-net-snmp \
 	$(if $(call IsEnabled,DNSDIST_GNUTLS),--with,--without)-gnutls \
 	$(if $(call IsEnabled,DNSDIST_OPENSSL),--with,--without)-libssl \
 	$(if $(call IsEnabled,DNSDIST_DNS_OVER_TLS),--enable-dns-over-tls,) \
