@@ -191,4 +191,10 @@ menu "Configuration"
 			"Enable support for the internal web server in dnsdist"
 		default n
 
+	config DNSDIST_YAML
+		bool "YAML configuration support"
+		help
+			"Enable support for YAML configuration"
+		default n
+
 endmenu

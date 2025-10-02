@@ -1,12 +1,12 @@
 include $(TOPDIR)/rules.mk
 
 PKG_NAME:=dnsdist
-PKG_VERSION:=1.9.10
+PKG_VERSION:=2.0.0
 PKG_RELEASE:=1
 
-PKG_SOURCE:=$(PKG_NAME)-$(PKG_VERSION).tar.bz2
+PKG_SOURCE:=$(PKG_NAME)-$(PKG_VERSION).tar.xz
 PKG_SOURCE_URL:=https://downloads.powerdns.com/releases/
-PKG_HASH:=027ddbdee695c5a59728057bfc41c5b1a691fa1c7a5e89278b09f355325fbed6
+PKG_HASH:=da30742f51aac8be7e116677cb07bc49fbea979fc5443e7e1fa8fa7bd0a63fe5
 
 PKG_MAINTAINER:=Peter van Dijk <peter.van.dijk@powerdns.com>, Remi Gacogne <remi.gacogne@powerdns.com>
 PKG_LICENSE:=GPL-2.0-only
@@ -16,13 +16,17 @@ PKG_CPE_ID:=cpe:/a:powerdns:dnsdist
 PKG_INSTALL:=1
 PKG_BUILD_PARALLEL:=1
 
-PKG_BUILD_DEPENDS:=boost
+PKG_BUILD_DEPENDS:=boost rust/host
 
 PKG_CONFIG_DEPENDS:= \
   CONFIG_DNSDIST_GNUTLS \
   CONFIG_DNSDIST_OPENSSL
 
 include $(INCLUDE_DIR)/package.mk
+include ../../lang/rust/rust-values.mk
+
+MAKE_VARS += RUSTC_TARGET_ARCH=$(RUSTC_TARGET_ARCH)
+MAKE_VARS += RUST_TARGET=--target=$(RUSTC_TARGET_ARCH)
 
 define Package/dnsdist/Default
   SECTION:=net
@@ -125,8 +129,8 @@ IsEnabled = $(or $(filter full,$(BUILD_VARIANT)),$(CONFIG_$(1)))
 #
 # none of this is pretty
 TARGET_CXX+=-std=c++17
-TARGET_CFLAGS+=-Os -fvisibility=hidden -flto -fno-ipa-cp -DNDEBUG
-TARGET_CXXFLAGS+=-Os -fvisibility=hidden -flto -fno-ipa-cp -DNDEBUG \
+TARGET_CFLAGS+=-Os -fvisibility=hidden -fno-ipa-cp -DNDEBUG
+TARGET_CXXFLAGS+=-Os -fvisibility=hidden -fno-ipa-cp -DNDEBUG \
 	-DDISABLE_DEPRECATED_DYNBLOCK -DDISABLE_RECVMMSG -DDISABLE_NPN -DDISABLE_FALSE_SHARING_PADDING -DUSE_SINGLE_ACCEPTOR_THREAD -DOPENSSL_NO_ENGINE -DDISABLE_OPENSSL_ERROR_STRINGS \
 	$(if $(call IsEnabled,DNSDIST_CARBON),,-DDISABLE_CARBON) \
 	$(if $(call IsEnabled,DNSDIST_COMPLETION),,-DDISABLE_COMPLETION) \
@@ -150,11 +154,12 @@ CONFIGURE_ARGS+= \
 	--with-lua=luajit \
 	--with-libcap \
 	--without-xsk \
+	$(if $(call IsEnabled,DNSDIST_YAML),--enable,--disable)-yaml \
 	$(if $(call IsEnabled,DNSDIST_PIE),,--disable-hardening) \
 	$(if $(call IsEnabled,DNSDIST_SODIUM),--enable-dnscrypt --with-libsodium,--disable-dnscrypt --without-libsodium) \
 	$(if $(call IsEnabled,DNSDIST_DNSTAP),--enable-dnstap=yes,--enable-dnstap=no) \
 	$(if $(call IsEnabled,DNSDIST_RE2),--with,--without)-re2 \
-	$(if $(call IsEnabled,DNSDIST_NET_SNMP),--with,--without)-net-snmp \
+	$(if $(call IsEnabled,DNSDIST_NET_SNMP),--without,--without)-net-snmp \
 	$(if $(call IsEnabled,DNSDIST_GNUTLS),--with,--without)-gnutls \
 	$(if $(call IsEnabled,DNSDIST_OPENSSL),--with,--without)-libssl \
 	$(if $(call IsEnabled,DNSDIST_DNS_OVER_TLS),--enable-dns-over-tls,) \
