@@ -35,9 +35,7 @@ define Package/dnsdist/Default
 	  +libatomic \
 	  +libcap \
 	  +libstdcpp \
-	  @(HAS_LUAJIT_ARCH&&!aarch64):+luajit \
-	  @aarch64:+liblua \
-	  @!HAS_LUAJIT_ARCH:+liblua
+	  $(if $(and $(HAS_LUAJIT_ARCH),$(filter-out aarch64,$(ARCH))), +luajit, +liblua) \
   URL:=https://dnsdist.org/
   VARIANT:=$(1)
   PROVIDES:=dnsdist
