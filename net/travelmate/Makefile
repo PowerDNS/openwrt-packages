@@ -1,13 +1,13 @@
 #
-# Copyright (c) 2016-2024 Dirk Brenken (dev@brenken.org)
+# Copyright (c) 2016-2025 Dirk Brenken (dev@brenken.org)
 # This is free software, licensed under the GNU General Public License v3.
 #
 
 include $(TOPDIR)/rules.mk
 
 PKG_NAME:=travelmate
-PKG_VERSION:=2.1.3
-PKG_RELEASE:=3
+PKG_VERSION:=2.2.1
+PKG_RELEASE:=6
 PKG_LICENSE:=GPL-3.0-or-later
 PKG_MAINTAINER:=Dirk Brenken <dev@brenken.org>
 
@@ -17,12 +17,12 @@ define Package/travelmate
 	SECTION:=net
 	CATEGORY:=Network
 	TITLE:=A wlan connection manager for travel router
-	DEPENDS:=+iwinfo +jshn +jsonfilter +curl +ca-bundle +rpcd +rpcd-mod-rpcsys
+	DEPENDS:=+iw +ip +jshn +jsonfilter +curl +ca-bundle +rpcd +rpcd-mod-rpcsys
 	PKGARCH:=all
 endef
 
 define Package/travelmate/description
-A wlan connection manager for travel routers.
+A wlan connection manager for travel router.
 Please see https://github.com/openwrt/packages/blob/master/net/travelmate/files/README.md for further information.
 
 endef

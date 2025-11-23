@@ -1,11 +1,11 @@
 include $(TOPDIR)/rules.mk
 
 PKG_NAME:=yt-dlp
-PKG_VERSION:=2025.7.21
+PKG_VERSION:=2025.9.26
 PKG_RELEASE:=1
 
 PYPI_NAME:=yt-dlp
-PKG_HASH:=46fbb53eab1afbe184c45b4c17e9a6eba614be680e4c09de58b782629d0d7f43
+PKG_HASH:=c148ae8233ac4ce6c5fbf6f70fcc390f13a00f59da3776d373cf88c5370bda86
 PYPI_SOURCE_NAME:=yt_dlp
 
 PKG_MAINTAINER:=George Sapkin <george@sapk.in>
