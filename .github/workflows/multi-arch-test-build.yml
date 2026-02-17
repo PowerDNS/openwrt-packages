@@ -28,4 +28,4 @@ jobs:
   build:
     name: Feeds Package Test Build
     needs: formalities
-    uses: openwrt/actions-shared-workflows/.github/workflows/multi-arch-test-build.yml@main
+    uses: powerdns/openwrt-actions-shared-workflows/.github/workflows/multi-arch-test-build.yml@diskspace
