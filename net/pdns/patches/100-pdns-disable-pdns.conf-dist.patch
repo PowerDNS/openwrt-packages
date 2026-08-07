@@ -1,14 +1,14 @@
 --- a/pdns/Makefile.am
 +++ b/pdns/Makefile.am
-@@ -82,7 +82,6 @@ CLEANFILES = \
+@@ -81,7 +81,6 @@ CLEANFILES = \
  	backends/gsql/gsqlbackend.gcda \
  	backends/gsql/gsqlbackend.gcno \
  	backends/gsql/gsqlbackend.gcov \
 -	pdns.conf-dist \
  	apidocfiles.h
  
- if !HAVE_API_SWAGGER_JSON
-@@ -116,8 +115,6 @@ apidocfiles.h: api-swagger.yaml api-swag
+ if !HAVE_API_OPENAPI_JSON
+@@ -115,8 +114,6 @@ apidocfiles.h: api-openapi.yaml api-open
  	$(AM_V_GEN)$(srcdir)/incfiles $^ > $@.tmp
  	@mv $@.tmp $@
  
@@ -17,7 +17,7 @@
  sbin_PROGRAMS = pdns_server
  bin_PROGRAMS = \
  	pdns_control \
-@@ -157,7 +154,7 @@ if IXFRDIST
+@@ -154,7 +151,7 @@ if IXFRDIST
  bin_PROGRAMS += \
  	ixfrdist
  
@@ -26,7 +26,7 @@
  	ixfrdist.example.yml
  endif
  
-@@ -1342,9 +1339,6 @@ dnspcap2protobuf_LDADD = \
+@@ -1378,9 +1375,6 @@ dnspcap2protobuf_LDADD = \
  	$(BOOST_PROGRAM_OPTIONS_LIBS) \
  	$(RT_LIBS)
  
