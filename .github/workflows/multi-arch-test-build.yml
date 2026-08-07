@@ -23,5 +23,5 @@ jobs:
 
   build:
     name: Feeds Package Test Build
-    needs: wait-for-formalities
+    #needs: wait-for-formalities
     uses: openwrt/actions-shared-workflows/.github/workflows/multi-arch-test-build.yml@main
